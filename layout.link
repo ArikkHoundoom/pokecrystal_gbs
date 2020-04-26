@@ -1,0 +1,43 @@
+ROM0
+	org $0
+	"header"
+	
+	org $10
+	"title"
+	
+	org $30
+	"author"
+	
+	org $50
+	"copyright"
+	
+	org $3f00
+	"gbs_code"
+	"engine_code"
+
+ROMX $01
+	"audio"
+	"Songs 1"
+
+ROMX $02
+	"Songs 2"
+
+ROMX $03
+	"Songs 3"
+	"Sound Effects"
+
+ROMX $04
+	"Songs 4"
+
+ROMX $05
+	"Songs 5"
+
+ROMX $06
+	"Extra Songs 3"
+
+WRAM0
+	"Stack"
+	"Audio RAM"
+
+HRAM
+	"HRAM"
