@@ -27,3 +27,6 @@
 
 # rgbds binary
 rgbds-0.4.0/
+
+# hxd stuff
+*.bak
