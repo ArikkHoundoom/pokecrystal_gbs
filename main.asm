@@ -33,6 +33,11 @@ _init::
     push af
     call _InitSound
 
+    ; set stereo flag
+    ld a, [wOptions]
+    set 5, a ; set STEREO, a
+    ld [wOptions], a
+
     ; music ID (a) -> de
     pop af
     ld d, 0
