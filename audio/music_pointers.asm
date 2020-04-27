@@ -106,5 +106,8 @@ Music::
 	dba Music_SuicuneBattle
 	dba Music_BattleTowerLobby
 	dba Music_MobileCenter
+	IF DEF(_EXTRA)
+		dba GS_TitleScreen
+	ENDC
 
 Music_End::

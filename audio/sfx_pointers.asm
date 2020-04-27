@@ -128,6 +128,9 @@ SFX::
 	dba Sfx_SweetKiss2
 	dba Sfx_BellyDrum
 	dba Sfx_Unknown7F
+	IF DEF(_EXTRA)
+	        dba Sfx_Unused
+	ENDC
 	dba Sfx_SludgeBomb
 	dba Sfx_Foresight
 	dba Sfx_Spite

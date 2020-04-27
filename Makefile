@@ -27,7 +27,8 @@ audio_home_SFX.o \
 main_SFX.o \
 wram_SFX.o
 
-RGBASMFLAGS = -L -Weverything
+# add -D_EXTRA to add some more G/S tracks
+RGBASMFLAGS = -L -Weverything -D_EXTRA
 
 clean:
 	rm *.o
