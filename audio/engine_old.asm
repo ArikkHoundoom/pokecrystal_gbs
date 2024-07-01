@@ -38,8 +38,8 @@ _InitSound::
 	dec e
 	jr nz, .clearsound
 
-	ld hl, wMusic
-	ld de, wMusicEnd - wMusic
+	ld hl, wAudio
+	ld de, wAudioEnd - wAudio
 .clearaudio
 	xor a
 	ld [hli], a
@@ -2358,6 +2358,117 @@ _PlayMusic::
 	call MusicOn
 	ret
 
+_PlayCry::
+; Play cry de using parameters:
+;	wCryPitch
+;	wCryLength
+
+	call MusicOff
+
+; Overload the music id with the cry id
+	ld hl, wMusicID
+	ld [hl], e
+	inc hl
+	ld [hl], d
+
+; 3-byte pointers (bank, address)
+	ld hl, Cries
+	add hl, de
+	add hl, de
+	add hl, de
+
+	ld a, [hli]
+	ld [wMusicBank], a
+
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+
+; Read the cry's sound header
+	call LoadMusicByte
+	; Top 2 bits contain the number of channels
+	rlca
+	rlca
+	maskbits NUM_MUSIC_CHANS
+
+; For each channel:
+	inc a
+.loop
+	push af
+	call LoadChannel ; bc = current channel
+
+	ld hl, CHANNEL_FLAGS1
+	add hl, bc
+	set SOUND_CRY, [hl]
+
+	ld hl, CHANNEL_FLAGS2
+	add hl, bc
+	set SOUND_PITCH_OFFSET, [hl]
+
+	ld hl, CHANNEL_PITCH_OFFSET
+	add hl, bc
+	ld a, [wCryPitch]
+	ld [hli], a
+	ld a, [wCryPitch + 1]
+	ld [hl], a
+
+; No tempo for channel 4
+	ld a, [wCurChannel]
+	maskbits NUM_MUSIC_CHANS
+	cp CHAN4
+	jr nc, .start
+
+; Tempo is effectively length
+	ld hl, CHANNEL_TEMPO
+	add hl, bc
+	ld a, [wCryLength]
+	ld [hli], a
+	ld a, [wCryLength + 1]
+	ld [hl], a
+.start
+	call StartChannel
+	ld a, [wStereoPanningMask]
+	and a
+	jr z, .next
+
+; Stereo only: Play cry from the monster's side.
+; This only applies in-battle.
+
+	ld a, [wOptions]
+	bit STEREO, a
+	jr z, .next
+
+; [CHANNEL_TRACKS] &= [wCryTracks]
+	ld hl, CHANNEL_TRACKS
+	add hl, bc
+	ld a, [hl]
+	ld hl, wCryTracks
+	and [hl]
+	ld hl, CHANNEL_TRACKS
+	add hl, bc
+	ld [hl], a
+
+.next
+	pop af
+	dec a
+	jr nz, .loop
+
+; Cries play at max volume, so we save the current volume for later.
+	ld a, [wLastVolume]
+	and a
+	jr nz, .end
+
+	ld a, [wVolume]
+	ld [wLastVolume], a
+	ld a, MAX_VOLUME
+	ld [wVolume], a
+
+.end
+	ld a, 1 ; stop playing music
+	ld [wSFXPriority], a
+	call MusicOn
+	ret
+
 _PlaySFX::
 ; clear channels if they aren't already
 	call MusicOff
@@ -2717,4 +2828,24 @@ ClearChannel:
 	ld [hli], a ; rNR13, rNR23, rNR33, rNR43 ; frequency lo = 0
 	ld a, $80
 	ld [hli], a ; rNR14, rNR24, rNR34, rNR44 ; restart sound (freq hi = 0)
+	ret
+
+PlayTrainerEncounterMusic::
+; input: e = trainer type
+	; turn fade off
+	xor a
+	ld [wMusicFade], a
+	; play nothing for one frame
+	push de
+	ld de, MUSIC_NONE
+	call PlayMusic
+	call DelayFrame
+	; play new song
+	call MaxVolume
+	pop de
+	ld d, $00
+	ld hl, TrainerEncounterMusic
+	add hl, de
+	ld e, [hl]
+	call PlayMusic
 	ret

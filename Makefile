@@ -5,7 +5,7 @@ music: crystal.gbs
 sfx: crystal_sfx.gbs
 
 # Base dir of RGBDS. You may want to change this.
-RGBDS ?= rgbds-0.4.0/
+;RGBDS ?= rgbds-0.4.0/
 
 RGBASM  ?= $(RGBDS)rgbasm
 RGBFIX  ?= $(RGBDS)rgbfix
