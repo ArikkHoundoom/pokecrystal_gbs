@@ -106,6 +106,12 @@ Music::
 	dba Music_SuicuneBattle
 	dba Music_BattleTowerLobby
 	dba Music_MobileCenter
+; new to this mod
+	dba Music_Shop
+	dba Music_Ext_KantoTrainerBattle
+	dba Music_CeruleanCity
+	dba Music_CinnabarIsland
+	dba Music_Route24
 	IF DEF(_EXTRA)
 		dba GS_TitleScreen
 	ENDC

@@ -1,3 +1,6 @@
+# gbs storage
+/gbs/
+
 # generated
 *.o
 
