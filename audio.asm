@@ -136,11 +136,15 @@ SECTION "Extra Songs 2", ROMX
 INCLUDE "audio/music/postcredits.asm"
 
 SECTION "Extra Songs 3", ROMX
-INCLUDE "audio/music/shop.asm"
-INCLUDE "audio/music/ext_kantotrainerbattle.asm"
-INCLUDE "audio/music/ceruleancity.asm"
-INCLUDE "audio/music/cinnabarisland.asm"
-INCLUDE "audio/music/route24.asm"
+INCLUDE "audio/music/uemuralatios.asm"
+;INCLUDE "audio/music/unknowndungeon.asm"
+;INCLUDE "audio/music/invadersend.asm"
+;INCLUDE "audio/music/gadgetroom.asm"
+;INCLUDE "audio/music/shop.asm"
+;INCLUDE "audio/music/ext_kantotrainerbattle.asm"
+;INCLUDE "audio/music/ceruleancity.asm"
+;INCLUDE "audio/music/cinnabarisland.asm"
+;INCLUDE "audio/music/route24.asm"
 IF DEF(_EXTRA)
         INCLUDE "audio/music/extra/gs_titlescreen.asm"
 ENDC
